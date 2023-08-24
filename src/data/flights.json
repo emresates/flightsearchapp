@@ -1,0 +1,185 @@
+{
+  "results": [
+    {
+      "from": "Istanbul",
+      "to": "Ankara",
+      "departuredate": "26.08.2023",
+      "departuretime": "13.20",
+      "time": "2 hours",
+      "price": 250,
+      "company": "Pegasus"
+    },
+    {
+      "from": "Istanbul",
+      "to": "Ankara",
+      "departuredate": "26.08.2023",
+      "departuretime": "15.30",
+      "time": "1 hour 30 minutes",
+      "price": 350,
+      "company": "Turkish Airlines"
+    },
+    {
+      "from": "Istanbul",
+      "to": "Ankara",
+      "departuredate": "27.08.2023",
+      "departuretime": "16.00",
+      "time": "2 hours 15 minutes",
+      "price": 250,
+      "company": "Emirates"
+    },
+    {
+      "from": "Istanbul",
+      "to": "Munih",
+      "departuredate": "28.08.2023",
+      "departuretime": "09.00",
+      "time": "5 hours",
+      "price": 650,
+      "company": "Pegasus"
+    },
+    {
+      "from": "Istanbul",
+      "to": "Munih",
+      "departuredate": "28.08.2023",
+      "departuretime": "10.00",
+      "time": "5 hours 30 minutes",
+      "price": 750,
+      "company": "Turkish Airlines"
+    },
+    {
+      "from": "Istanbul",
+      "to": "Munih",
+      "departuredate": "28.08.2023",
+      "departuretime": "15.00",
+      "time": "7 hours 30 minutes",
+      "price": 850,
+      "company": "Emirates"
+    },
+    {
+      "from": "Istanbul",
+      "to": "Munih",
+      "departuredate": "28.08.2023",
+      "departuretime": "13.00",
+      "time": "7 hours 30 minutes",
+      "price": 950,
+      "company": "Turkish Airlines"
+    },
+    {
+      "from": "Istanbul",
+      "to": "Paris",
+      "departuredate": "29.08.2023",
+      "departuretime": "19.00",
+      "time": "4 hours",
+      "price": 550,
+      "company": "Turkish Airlines"
+    },
+    {
+      "from": "Istanbul",
+      "to": "Paris",
+      "departuredate": "29.08.2023",
+      "departuretime": "19.30",
+      "time": "4 hours 45 minutes",
+      "price": 550,
+      "company": "Pegasus"
+    },
+    {
+      "from": "Istanbul",
+      "to": "Paris",
+      "departuredate": "29.08.2023",
+      "departuretime": "21.45",
+      "time": "4 hours 15 minutes",
+      "price": 450,
+      "company": "Emirates"
+    },
+
+    {
+      "from": "Ankara",
+      "to": "Istanbul",
+      "departuredate": "31.08.2023",
+      "departuretime": "13.20",
+      "time": "2 hours",
+      "price": 250,
+      "company": "Pegasus"
+    },
+    {
+      "from": "Ankara",
+      "to": "Istanbul",
+      "departuredate": "31.08.2023",
+      "departuretime": "15.30",
+      "time": "1 hour 30 minutes",
+      "price": 350,
+      "company": "Turkish Airlines"
+    },
+    {
+      "from": "Ankara",
+      "to": "Istanbul",
+      "departuredate": "01.09.2023",
+      "departuretime": "16.00",
+      "time": "2 hours 15 minutes",
+      "price": 250,
+      "company": "Emirates"
+    },
+    {
+      "from": "Munih",
+      "to": "Istanbul",
+      "departuredate": "01.09.2023",
+      "departuretime": "09.00",
+      "time": "5 hours",
+      "price": 650,
+      "company": "Pegasus"
+    },
+    {
+      "from": "Munih",
+      "to": "Istanbul",
+      "departuredate": "01.09.2023",
+      "departuretime": "10.00",
+      "time": "5 hours 30 minutes",
+      "price": 750,
+      "company": "Turkish Airlines"
+    },
+    {
+      "from": "Munih",
+      "to": "Istanbul",
+      "departuredate": "01.09.2023",
+      "departuretime": "15.00",
+      "time": "7 hours 30 minutes",
+      "price": 850,
+      "company": "Emirates"
+    },
+    {
+      "from": "Munih",
+      "to": "Istanbul",
+      "departuredate": "01.09.2023",
+      "departuretime": "13.00",
+      "time": "7 hours 30 minutes",
+      "price": 950,
+      "company": "Turkish Airlines"
+    },
+    {
+      "from": "Paris",
+      "to": "Istanbul",
+      "departuredate": "02.09.2023",
+      "departuretime": "19.00",
+      "time": "4 hours",
+      "price": 550,
+      "company": "Turkish Airlines"
+    },
+    {
+      "from": "Paris",
+      "to": "Istanbul",
+      "departuredate": "02.09.2023",
+      "departuretime": "19.30",
+      "time": "4 hours 45 minutes",
+      "price": 550,
+      "company": "Pegasus"
+    },
+    {
+      "from": "Paris",
+      "to": "Istanbul",
+      "departuredate": "02.09.2023",
+      "departuretime": "21.45",
+      "time": "4 hours 15 minutes",
+      "price": 450,
+      "company": "Emirates"
+    }
+  ]
+}
