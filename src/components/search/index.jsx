@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { DateIcon } from "../icons";
 import Cities from "../../data/cities.json";
 import Flights from "../../data/flights.json";
 import Results from "../results";
+import TripChoice from "../tripChoice";
+import DatePick from "../datePick";
 
 function formatDate(inputDate) {
   const parts = inputDate.split("-"); // Tarihi parçalara ayırıyoruz
@@ -13,13 +14,14 @@ function formatDate(inputDate) {
 }
 
 function SearchUi() {
+  //* States
   const [showOptionsFrom, setShowOptionsFrom] = useState(false);
   const [showOptionsTo, setShowOptionsTo] = useState(false);
 
   const [fromOptions, setFromOptions] = useState();
   const [toOptions, setToOptions] = useState();
 
-  const [isOneWay, setIsOneWay] = useState(false);
+  const [isOneWay, setIsOneWay] = useState(false); // Is the trip one way or not
   const [formData, setFormData] = useState({
     from: "",
     to: "",
@@ -27,11 +29,13 @@ function SearchUi() {
     return: "",
   });
 
+  // When it loads first time, it takes the data
   useEffect(() => {
     setFromOptions(Cities.results);
     setToOptions(Cities.results);
   }, []);
 
+  // Input handleChange func
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
@@ -40,87 +44,12 @@ function SearchUi() {
     }));
   };
 
-  const TripChoice = () => {
-    return (
-      <div className='flex gap-x-5 text-xl'>
-        <div className='flex gap-x-1'>
-          <input
-            defaultChecked
-            onClick={() => setIsOneWay(true)}
-            type='radio'
-            id='oneway'
-            name='flight'
-            value='oneway'
-          />
-          <label htmlFor='oneway'>One Way</label>
-        </div>
-        <div className='flex gap-x-1'>
-          <input
-            onChange={() => setIsOneWay(false)}
-            checked={!isOneWay}
-            type='radio'
-            id='roundtrip'
-            name='flight'
-            value='roundtrip'
-          />
-          <label htmlFor='roundtrip'>Round Trip</label>
-        </div>
-      </div>
-    );
-  };
-
-  const DatePick = () => {
-    return (
-      <div className='flex items-center gap-x-4 mt-2 w-full justify-between'>
-        <div className='flex gap-x-1 items-center justify-center'>
-          <label htmlFor='departure'>Departure</label>
-          <div className='relative'>
-            <div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
-              {DateIcon}
-            </div>
-            <input
-              name='departure'
-              id='departure'
-              type='date'
-              value={formData.departure}
-              onChange={handleChange}
-              className='border text-base rounded-lg block w-full pl-10 p-1 bg-white text-black border-gray-600 placeholder-gray-400 '
-            />
-          </div>
-        </div>
-        <div className='flex gap-x-1 items-center justify-center'>
-          <label
-            htmlFor='return'
-            className={`${isOneWay ? "pointer-events-none" : ""}`}
-          >
-            Return
-          </label>
-          <div className='relative'>
-            <div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
-              {DateIcon}
-            </div>
-            <input
-              name='return'
-              id='return'
-              type='date'
-              value={formData.return}
-              onChange={handleChange}
-              className={`border text-base rounded-lg block w-full pl-10 p-1 border-gray-600 ${
-                isOneWay
-                  ? "pointer-events-none bg-gray-700 text-white"
-                  : "bg-white text-black"
-              }`}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   console.log(formData);
+  // Reformat the types of choosen dates
   const dateDeparture = formatDate(formData.departure);
   const dateReturn = formatDate(formData.return);
 
+  // Search Results for Departure
   const searchDataDeparture = Flights.results.filter((item) => {
     return (
       item.from === formData.from &&
@@ -129,6 +58,7 @@ function SearchUi() {
     );
   });
 
+  // Search Results for Departure
   const searchDataReturn = Flights.results.filter((item) => {
     return (
       item.from === formData.to &&
@@ -137,20 +67,17 @@ function SearchUi() {
     );
   });
 
-  // const isFormIncomplete = Object.values(formData).some((value) => value === "");
-
+  // If form is incomplete, it doesn't show the data
   const isFormIncomplete = isOneWay
     ? ["from", "to", "departure"].some((field) => formData[field] === "")
     : Object.values(formData).some((value) => value === "");
 
-  console.log(isFormIncomplete);
-  console.log(isOneWay);
-
   return (
     <div>
       <section className='bg-yellow-300 rounded-xl text-black w-1/3 mx-auto mt-10 p-14'>
-        <TripChoice />
-        
+        {/* Trip Type Choice */}
+        <TripChoice isOneWay={isOneWay} setIsOneWay={setIsOneWay} />
+
         <div className='flex gap-x-4 w-full justify-between'>
           {/* From Cities */}
           <div className='flex gap-x-1 items-center w-full'>
@@ -266,7 +193,12 @@ function SearchUi() {
           </div>
         </div>
 
-        <DatePick />
+        {/* Data Pickers */}
+        <DatePick
+          formData={formData}
+          handleChange={handleChange}
+          isOneWay={isOneWay}
+        />
       </section>
       <Results
         resultsOneWay={searchDataDeparture}
