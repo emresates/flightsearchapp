@@ -46,15 +46,6 @@ function SearchUi() {
     setToOptions(Cities.results);
   }, []);
 
-  // Input handleChange func
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
   console.log(formData);
 
   // Reformat the types of choosen dates
@@ -230,8 +221,8 @@ function SearchUi() {
         {/* Data Pickers */}
         <DatePick
           formData={formData}
-          handleChange={handleChange}
           isOneWay={isOneWay}
+          setFormData={setFormData}
         />
       </section>
       <Results
