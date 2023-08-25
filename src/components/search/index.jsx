@@ -170,7 +170,7 @@ function SearchUi() {
 
   return (
     <div>
-      <section className='bg-yellow-300 rounded-xl text-black w-1/3 mx-auto mt-10 p-14'>
+      <section className='backdrop-blur-xl rounded-xl shadow-2xl shadow-black text-white w-1/3 mx-auto p-14'>
         {/* Trip Type Choice */}
         <TripTypeChoice isOneWay={isOneWay} setIsOneWay={setIsOneWay} />
 
@@ -184,18 +184,15 @@ function SearchUi() {
                 id='from'
                 name='from'
                 value={fromText}
-                onChange={(e) => {
-                  setFromText(e.target.value);
-                }}
                 placeholder='Type or select...'
-                onFocus={() => {
-                  setShowOptionsFrom(true);
-                }}
-                className='rounded-md p-1 border-black border text-lg w-auto'
+                onChange={(e) => setFromText(e.target.value)}
+                onFocus={() => setShowOptionsFrom(true)}
                 onBlur={() => handleBlur("from")}
+                className='rounded-md pl-2 py-0.5 border placeholder-slate-950 text-lg w-auto shadow-md shadow-white text-white bg-transparent outline-none border-white'
+                autocomplete='off'
               />
               {showOptionsFrom && (
-                <ul className='absolute top-full left-0 w-full z-10 text-lg'>
+                <ul className='absolute top-full left-0 w-full z-10 text-lg text-black'>
                   {fromOptions
                     .filter((option) =>
                       option.toLowerCase().includes(fromText.toLowerCase())
@@ -224,14 +221,15 @@ function SearchUi() {
                 type='text'
                 name='to'
                 value={toText}
-                onChange={(e) => setToText(e.target.value)}
                 placeholder='Type or select...'
+                onChange={(e) => setToText(e.target.value)}
                 onFocus={() => setShowOptionsTo(true)}
-                className='p-1 rounded-md border-black border text-lg'
                 onBlur={() => handleBlur("to")}
+                className='rounded-md pl-2 py-0.5 border placeholder-slate-950 text-lg w-auto shadow-md shadow-white text-white bg-transparent outline-none border-white'
+                autocomplete='off'
               />
               {showOptionsTo && (
-                <ul className='absolute top-full left-0 w-full z-10 text-lg'>
+                <ul className='absolute top-full left-0 w-full z-10 text-lg text-black'>
                   {toOptions
                     .filter((option) =>
                       option.toLowerCase().includes(toText.toLowerCase())

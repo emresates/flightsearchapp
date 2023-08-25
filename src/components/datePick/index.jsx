@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { DateIcon } from "../icons";
+
+import { BsFillCalendarEventFill } from "react-icons/bs";
 
 function DatePick({ formData, isOneWay, setFormData }) {
   // This use effect checks the isOneWay situation, if departure date value is smaller then return date value
@@ -76,7 +77,7 @@ function DatePick({ formData, isOneWay, setFormData }) {
         <label htmlFor='departure'>Departure</label>
         <div className='relative'>
           <div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
-            {DateIcon}
+            <BsFillCalendarEventFill />
           </div>
           <input
             name='departure'
@@ -84,7 +85,7 @@ function DatePick({ formData, isOneWay, setFormData }) {
             type='date'
             value={formData.departure}
             onChange={(e) => handleChange(e)}
-            className='border text-base rounded-lg block w-full pl-10 p-1 bg-white text-black border-gray-600 placeholder-gray-400 '
+            className='border text-base rounded-lg block w-full pl-10 p-1 bg-transparent border-black shadow-sm text-white shadow-black'
           />
         </div>
       </div>
@@ -97,7 +98,7 @@ function DatePick({ formData, isOneWay, setFormData }) {
         </label>
         <div className='relative'>
           <div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
-            {DateIcon}
+            <BsFillCalendarEventFill />
           </div>
           <input
             name='return'
@@ -105,10 +106,10 @@ function DatePick({ formData, isOneWay, setFormData }) {
             type='date'
             value={formData.return}
             onChange={(e) => handleChange(e)}
-            className={`border text-base rounded-lg block w-full pl-10 p-1 border-gray-600 ${
+            className={`border text-base rounded-lg block w-full pl-10 p-1 shadow-sm border-black text-white shadow-black ${
               isOneWay
                 ? "pointer-events-none bg-gray-700 text-white"
-                : "bg-white text-black"
+                : "bg-transparent text-black"
             }`}
           />
         </div>

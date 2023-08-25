@@ -11,8 +11,11 @@ function TripTypeChoice({ isOneWay, setIsOneWay }) {
           id='oneway'
           name='flight'
           value='oneway'
+          className='cursor-pointer'
         />
-        <label htmlFor='oneway'>One Way</label>
+        <label htmlFor='oneway' className='cursor-pointer'>
+          One Way
+        </label>
       </div>
       <div className='flex gap-x-1'>
         <input
@@ -22,8 +25,11 @@ function TripTypeChoice({ isOneWay, setIsOneWay }) {
           id='roundtrip'
           name='flight'
           value='roundtrip'
+          className='cursor-pointer'
         />
-        <label htmlFor='roundtrip'>Round Trip</label>
+        <label htmlFor='roundtrip' className='cursor-pointer'>
+          Round Trip
+        </label>
       </div>
     </div>
   );

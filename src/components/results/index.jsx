@@ -124,13 +124,13 @@ function Results({
 
   return (
     <div
-      className={`flex h-screen mx-auto mt-10 items-center justify-between rounded-xl overflow-hidden ${
-        isOneWay ? "w-1/2" : "w-2/3 "
+      className={`flex h-screen mx-auto mt-10 items-center justify-between rounded-xl overflow-hidden text-white ${
+        isOneWay ? "w-1/2" : "w-2/3  shadow-xl shadow-black"
       }`}
     >
       <div
-        className={`bg-red-400 h-full ${
-          isOneWay ? "w-2/3 m-auto rounded-xl" : "w-1/2"
+        className={`backdrop-blur-md h-full ${
+          isOneWay ? "w-2/3 m-auto rounded-xl shadow-xl shadow-black" : "w-1/2 border-r-4"
         }`}
       >
         {/* HEADERS */}
@@ -232,7 +232,7 @@ function Results({
 
       {/* FLIGHT ROUND TRIP RESULTS */}
       {!isOneWay && (
-        <div className='bg-green-400 h-full w-1/2'>
+        <div className='backdrop-blur-md h-full w-1/2'>
           {!isFormIncomplete ? (
             <h1 className='text-3xl text-center p-5 border-black border-b-2'>
               {to} - {from}
@@ -253,7 +253,7 @@ function Results({
             <table className='w-full'>
               {!isFormIncomplete && (
                 <tr className='border-b-4 border-blue-300 h-10'>
-                  <th className='cursor-pointer select-none w-1/5'>Airline</th>
+                  <th className='select-none w-1/5'>Airline</th>
                   <th
                     className='cursor-pointer select-none w-1/5 transition-all hover:bg-red-800'
                     onClick={() => handleSort("departuretime")}
