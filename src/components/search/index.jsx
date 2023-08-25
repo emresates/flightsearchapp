@@ -4,8 +4,8 @@ import React, { useEffect, useRef, useState } from "react";
 
 // Components
 import Results from "../results";
-import TripChoice from "../tripChoice";
 import DatePick from "../datePick";
+import TripTypeChoice from "../tripChoice";
 
 // Mock Data
 import Cities from "../../data/cities.json";
@@ -18,21 +18,24 @@ function formatDate(inputDate) {
   return formattedDate;
 }
 
-// NOTES:
-// Süsleme gerekli
-// Sonuçlar gelirken bekleme özelliği eklenecek
-
 function SearchUi() {
+  //! *********************** STATES ************************* !\\
+  // Written text states
   const [fromText, setFromText] = useState("");
   const [toText, setToText] = useState("");
-  //* States
+
+  // City option show states
   const [showOptionsFrom, setShowOptionsFrom] = useState(false);
   const [showOptionsTo, setShowOptionsTo] = useState(false);
 
+  // City Options
   const [fromOptions, setFromOptions] = useState();
   const [toOptions, setToOptions] = useState();
 
-  const [isOneWay, setIsOneWay] = useState(false); // Is the trip one way or not
+  // Is the trip one way or not
+  const [isOneWay, setIsOneWay] = useState(false);
+
+  // FORM DATA
   const [formData, setFormData] = useState({
     from: "",
     to: "",
@@ -49,20 +52,26 @@ function SearchUi() {
   const [searchDataDeparture, setSearchDataDeparture] = useState([]); // Departure results
   const [searchDataReturn, setSearchDataReturn] = useState([]); // Return results
 
-  // When it loads first time, it takes the data
-  useEffect(() => {
-    setFromOptions(Cities.results);
-    setToOptions(Cities.results);
-  }, []);
+  //! *********************** REFS ************************* !\\
+  // Mouse leave ref
+  const onBlurTimeout = useRef(null);
+
+  //! *********************** MANDATORY DEFINITIONS ************************* !\\
+  // If form is incomplete, it doesn't show the data
+  const isFormIncomplete = isOneWay
+    ? ["from", "to", "departure"].some((field) => formData[field] === "")
+    : Object.values(formData).some((value) => value === "");
 
   // Reformat the types of choosen dates
   const dateDeparture = formatDate(formData.departure);
   const dateReturn = formatDate(formData.return);
 
-  // If form is incomplete, it doesn't show the data
-  const isFormIncomplete = isOneWay
-    ? ["from", "to", "departure"].some((field) => formData[field] === "")
-    : Object.values(formData).some((value) => value === "");
+  //! *********************** USE EFFECTS ************************* !\\
+  // When it loads first time, it takes the cities data
+  useEffect(() => {
+    setFromOptions(Cities.results);
+    setToOptions(Cities.results);
+  }, []);
 
   // Departure data loading situation
   useEffect(() => {
@@ -102,8 +111,9 @@ function SearchUi() {
     }
   }, [formData.from, formData.to, dateReturn, isFormIncomplete]);
 
+  //! *********************** FUNCTIONS ************************* !\\
+
   //  When you click another place, this function closes the options
-  const onBlurTimeout = useRef(null);
   const handleBlur = (type) => {
     if (onBlurTimeout.current) {
       clearTimeout(onBlurTimeout.current);
@@ -162,7 +172,7 @@ function SearchUi() {
     <div>
       <section className='bg-yellow-300 rounded-xl text-black w-1/3 mx-auto mt-10 p-14'>
         {/* Trip Type Choice */}
-        <TripChoice isOneWay={isOneWay} setIsOneWay={setIsOneWay} />
+        <TripTypeChoice isOneWay={isOneWay} setIsOneWay={setIsOneWay} />
 
         <div className='flex gap-x-4 w-full justify-between'>
           {/* From Cities */}

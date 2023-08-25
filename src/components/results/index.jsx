@@ -12,17 +12,20 @@ function Results({
   isLoadingDeparture,
   isLoadingReturn,
 }) {
+  //! *********************** STATES ************************* !\\
   const [sortedResultsOneWay, setSortedResultsOneWay] = useState(); // Sorted One Way results
   const [sortedResultsReturn, setSortedResultsReturn] = useState(); // Sorted Round Trip results
   const [sortKey, setSortKey] = useState(null); // Key of sort
-  const [ascending, setAscending] = useState(true);
+  const [ascending, setAscending] = useState(true); // Asc- Desc
 
+  //! *********************** USE EFFECTS ************************* !\\
   // I added the data into another state for sorting
   useEffect(() => {
     setSortedResultsOneWay(resultsOneWay);
     setSortedResultsReturn(resultsReturn);
   }, [resultsOneWay, resultsReturn]);
 
+  //! *********************** FUNCTIONS ************************* !\\
   // Because of 24hour system, sometimes i wasn't seen well. This function fix that
   const formatTo24Hour = (timeString) => {
     const [hours, minutes] = timeString.split(".");
@@ -69,11 +72,10 @@ function Results({
     }
   };
 
-  console.log(resultsOneWay);
-
   return (
     <div className='flex w-1/2 h-screen mx-auto mt-10 items-center justify-between rounded-xl overflow-hidden'>
       <div className={`bg-red-400 h-full ${isOneWay ? "w-2/3 m-auto" : "w-1/2"}`}>
+        {/* HEADERS */}
         {!isFormIncomplete ? (
           <h1 className='text-3xl text-center p-5 border-black border-b-2'>
             {from} - {to}
@@ -83,6 +85,7 @@ function Results({
           <p className='text-center mt-5 text-3xl'>Please Fill the Blanks</p>
         )}
 
+        {/* FLIGHT ONE WAY RESULTS */}
         {isLoadingDeparture ? (
           <div className='w-full h-full flex items-center justify-start mt-10 flex-col'>
             <p className='text-2xl mb-5'>Results are loading...</p>
@@ -145,6 +148,7 @@ function Results({
         )}
       </div>
 
+      {/* FLIGHT ROUND TRIP RESULTS */}
       {!isOneWay && (
         <div className='bg-green-400 h-full w-1/2'>
           {!isFormIncomplete ? (

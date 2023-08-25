@@ -1,6 +1,6 @@
 import React from "react";
 
-function TripChoice({ isOneWay, setIsOneWay }) {
+function TripTypeChoice({ isOneWay, setIsOneWay }) {
   return (
     <div className='flex gap-x-5 text-xl'>
       <div className='flex gap-x-1'>
@@ -29,4 +29,4 @@ function TripChoice({ isOneWay, setIsOneWay }) {
   );
 }
 
-export default TripChoice;
+export default TripTypeChoice;
