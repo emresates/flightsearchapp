@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Loader1, Loader2 } from "../loading";
+
+// ICONS
+import { BsArrowRight } from "react-icons/bs";
+import { GiAirplaneArrival, GiAirplaneDeparture } from "react-icons/gi";
+import { PiArrowsDownUpFill } from "react-icons/pi";
+import { HiOutlineArrowSmallDown, HiOutlineArrowSmallUp } from "react-icons/hi2";
+
 function Results({
   resultsOneWay,
   resultsReturn,
@@ -17,6 +24,13 @@ function Results({
   const [sortedResultsReturn, setSortedResultsReturn] = useState(); // Sorted Round Trip results
   const [sortKey, setSortKey] = useState(null); // Key of sort
   const [ascending, setAscending] = useState(true); // Asc- Desc
+
+  // Arrows States
+  const [sortTypeDeparture, setSortTypeDeparture] = useState(null);
+  const [ascendingDeparture, setAscendingDeparture] = useState(true);
+
+  const [sortTypeReturn, setSortTypeReturn] = useState(null);
+  const [ascendingReturn, setAscendingReturn] = useState(true);
 
   //! *********************** USE EFFECTS ************************* !\\
   // I added the data into another state for sorting
@@ -47,24 +61,30 @@ function Results({
       setAscending(true);
     }
 
+    const isAscending = key === sortKey ? !ascending : true; // Yeni sıralama yönü
+
     if (dataType === "oneway") {
+      setSortTypeDeparture(key);
+      setAscendingDeparture(isAscending);
       const sorted = [...sortedResultsOneWay].sort((a, b) => {
         const aValue = key === "arrivaltime" ? formatTo24Hour(a[key]) : a[key];
         const bValue = key === "arrivaltime" ? formatTo24Hour(b[key]) : b[key];
 
-        if (aValue < bValue) return ascending ? -1 : 1;
-        if (aValue > bValue) return ascending ? 1 : -1;
+        if (aValue < bValue) return isAscending ? -1 : 1;
+        if (aValue > bValue) return isAscending ? 1 : -1;
         return 0;
       });
 
       setSortedResultsOneWay(sorted);
     } else {
+      setSortTypeReturn(key);
+      setAscendingReturn(isAscending);
       const sorted = [...sortedResultsReturn].sort((a, b) => {
         const aValue = key === "arrivaltime" ? formatTo24Hour(a[key]) : a[key];
         const bValue = key === "arrivaltime" ? formatTo24Hour(b[key]) : b[key];
 
-        if (aValue < bValue) return ascending ? -1 : 1;
-        if (aValue > bValue) return ascending ? 1 : -1;
+        if (aValue < bValue) return isAscending ? -1 : 1;
+        if (aValue > bValue) return isAscending ? 1 : -1;
         return 0;
       });
 
@@ -72,9 +92,47 @@ function Results({
     }
   };
 
+  // Arrows for departure section
+  const ArrowsDeparture = (key) => {
+    return (
+      <>
+        {sortTypeDeparture === key && ascendingDeparture == true ? (
+          <HiOutlineArrowSmallDown />
+        ) : sortTypeDeparture === key && ascendingDeparture == false ? (
+          <HiOutlineArrowSmallUp />
+        ) : (
+          <PiArrowsDownUpFill />
+        )}
+      </>
+    );
+  };
+
+  // Arrows for return section
+  const ArrowsReturn = (key) => {
+    return (
+      <>
+        {sortTypeReturn === key && ascendingReturn == true ? (
+          <HiOutlineArrowSmallDown />
+        ) : sortTypeReturn === key && ascendingReturn == false ? (
+          <HiOutlineArrowSmallUp />
+        ) : (
+          <PiArrowsDownUpFill />
+        )}
+      </>
+    );
+  };
+
   return (
-    <div className='flex w-1/2 h-screen mx-auto mt-10 items-center justify-between rounded-xl overflow-hidden'>
-      <div className={`bg-red-400 h-full ${isOneWay ? "w-2/3 m-auto" : "w-1/2"}`}>
+    <div
+      className={`flex h-screen mx-auto mt-10 items-center justify-between rounded-xl overflow-hidden ${
+        isOneWay ? "w-1/2" : "w-2/3 "
+      }`}
+    >
+      <div
+        className={`bg-red-400 h-full ${
+          isOneWay ? "w-2/3 m-auto rounded-xl" : "w-1/2"
+        }`}
+      >
         {/* HEADERS */}
         {!isFormIncomplete ? (
           <h1 className='text-3xl text-center p-5 border-black border-b-2'>
@@ -97,35 +155,44 @@ function Results({
           <table className='w-full'>
             {!isFormIncomplete && (
               <tr className='border-b-4 border-blue-300 h-10'>
-                <th
-                  className='cursor-pointer select-none w-1/5 transition-all hover:bg-red-800'
-                  onClick={() => handleSort("company", "oneway")}
-                >
-                  Company
+                <th className='select-none w-1/5'>
+                  <p className='flex items-center justify-center text-lg'>Airline</p>
                 </th>
                 <th
                   className='cursor-pointer select-none w-1/5 transition-all hover:bg-red-800'
                   onClick={() => handleSort("departuretime", "oneway")}
                 >
-                  Departure
+                  <p className='flex items-center justify-center text-lg'>
+                    Departure
+                    {ArrowsDeparture("departuretime")}
+                  </p>
                 </th>
                 <th
                   className='cursor-pointer select-none w-1/5 transition-all hover:bg-red-800'
                   onClick={() => handleSort("time", "oneway")}
                 >
-                  Duration
+                  <p className='flex items-center justify-center text-lg'>
+                    Duration
+                    {ArrowsDeparture("time")}
+                  </p>
                 </th>
                 <th
                   className='cursor-pointer select-none w-1/5 transition-all hover:bg-red-800'
                   onClick={() => handleSort("arrivaltime", "oneway")}
                 >
-                  Arrival
+                  <p className='flex items-center justify-center text-lg'>
+                    Arrival
+                    {ArrowsDeparture("arrivaltime")}
+                  </p>
                 </th>
                 <th
                   className='cursor-pointer select-none w-1/5 transition-all hover:bg-red-800'
                   onClick={() => handleSort("price", "oneway")}
                 >
-                  Price
+                  <p className='flex items-center justify-center text-lg'>
+                    Price
+                    {ArrowsDeparture("price")}
+                  </p>
                 </th>
               </tr>
             )}
@@ -137,9 +204,24 @@ function Results({
                     className='select-none h-20 text-center border-b-2 border-black hover:bg-gray-500 transition-colors'
                   >
                     <td>{result.company}</td>
-                    <td>{result.departuretime}</td>
-                    <td>{result.time}</td>
-                    <td>{result?.arrivaltime}</td>
+                    <td>
+                      <p className='flex flex-col items-center justify-center'>
+                        <GiAirplaneDeparture className='text-2xl' />
+                        {result.departuretime}
+                      </p>
+                    </td>
+                    <td>
+                      <p className='flex flex-col items-center justify-center text-sm'>
+                        {result.time}
+                        <BsArrowRight className='text-2xl' />
+                      </p>
+                    </td>
+                    <td>
+                      <p className='flex flex-col items-center justify-center'>
+                        <GiAirplaneArrival className='text-2xl' />
+                        {result?.arrivaltime}
+                      </p>
+                    </td>
                     <td>{result.price} $</td>
                   </tr>
                 );
@@ -171,35 +253,42 @@ function Results({
             <table className='w-full'>
               {!isFormIncomplete && (
                 <tr className='border-b-4 border-blue-300 h-10'>
-                  <th
-                    className='cursor-pointer select-none w-1/5 transition-all hover:bg-red-800'
-                    onClick={() => handleSort("company")}
-                  >
-                    Company
-                  </th>
+                  <th className='cursor-pointer select-none w-1/5'>Airline</th>
                   <th
                     className='cursor-pointer select-none w-1/5 transition-all hover:bg-red-800'
                     onClick={() => handleSort("departuretime")}
                   >
-                    Departure
+                    <p className='flex items-center justify-center text-lg'>
+                      Departure
+                      {ArrowsReturn("departuretime")}
+                    </p>
                   </th>
                   <th
                     className='cursor-pointer select-none w-1/5 transition-all hover:bg-red-800'
                     onClick={() => handleSort("time")}
                   >
-                    Duration
+                    <p className='flex items-center justify-center text-lg'>
+                      Duration
+                      {ArrowsReturn("time")}
+                    </p>
                   </th>
                   <th
                     className='cursor-pointer select-none w-1/5 transition-all hover:bg-red-800'
                     onClick={() => handleSort("arrivaltime")}
                   >
-                    Arrival
+                    <p className='flex items-center justify-center text-lg'>
+                      Arrival
+                      {ArrowsReturn("arrivaltime")}
+                    </p>
                   </th>
                   <th
                     className='cursor-pointer select-none w-1/5 transition-all hover:bg-red-800'
                     onClick={() => handleSort("price")}
                   >
-                    Price
+                    <p className='flex items-center justify-center text-lg'>
+                      Price
+                      {ArrowsReturn("price")}
+                    </p>
                   </th>
                 </tr>
               )}
@@ -208,12 +297,27 @@ function Results({
                   return (
                     <tr
                       key={index}
-                      className='h-20 text-center border-b-2 border-black'
+                      className='h-20 text-center border-b-2 border-black hover:bg-gray-500 transition-colors'
                     >
                       <td>{result.company}</td>
-                      <td>{result.departuretime}</td>
-                      <td>{result.time}</td>
-                      <td>{result?.arrivaltime}</td>
+                      <td>
+                        <p className='flex flex-col items-center justify-center'>
+                          <GiAirplaneDeparture className='text-2xl' />
+                          {result.departuretime}
+                        </p>
+                      </td>
+                      <td>
+                        <p className='flex flex-col items-center justify-center text-sm'>
+                          {result.time}
+                          <BsArrowRight className='text-2xl' />
+                        </p>
+                      </td>
+                      <td>
+                        <p className='flex flex-col items-center justify-center'>
+                          <GiAirplaneArrival className='text-2xl' />
+                          {result?.arrivaltime}
+                        </p>
+                      </td>
                       <td>{result.price} $</td>
                     </tr>
                   );
