@@ -18,11 +18,13 @@ function Results({
   const [sortKey, setSortKey] = useState(null);
   const [ascending, setAscending] = useState(true);
 
+  // I added the data into another state for sorting
   useEffect(() => {
     setSortedResultsOneWay(resultsOneWay);
     setSortedResultsReturn(resultsReturn);
   }, [resultsOneWay, resultsReturn]);
 
+  // Because of 24hour system, sometimes i wasn't seen well. This function fix that
   const formatTo24Hour = (timeString) => {
     const [hours, minutes] = timeString.split(".");
     let totalMinutes = parseInt(hours) * 60 + parseInt(minutes);
@@ -34,6 +36,7 @@ function Results({
     return totalMinutes;
   };
 
+  // Sort function
   const handleSort = (key, dataType) => {
     if (key === sortKey) {
       setAscending(!ascending);

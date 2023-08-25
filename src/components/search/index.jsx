@@ -1,19 +1,30 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Cities from "../../data/cities.json";
-import Flights from "../../data/flights.json";
+import React, { useEffect, useRef, useState } from "react";
+
+// Components
 import Results from "../results";
 import TripChoice from "../tripChoice";
 import DatePick from "../datePick";
 
+// Mock Data
+import Cities from "../../data/cities.json";
+import Flights from "../../data/flights.json";
+
+// This turns the date to our common usage
 function formatDate(inputDate) {
-  const parts = inputDate.split("-"); // Tarihi parçalara ayırıyoruz
-  const formattedDate = `${parts[2]}.${parts[1]}.${parts[0]}`; // Gün.ay.yıl formatına dönüştürüyoruz
+  const parts = inputDate.split("-");
+  const formattedDate = `${parts[2]}.${parts[1]}.${parts[0]}`;
   return formattedDate;
 }
 
+// NOTES:
+// Süsleme gerekli
+// Sonuçlar gelirken bekleme özelliği eklenecek
+
 function SearchUi() {
+  const [fromText, setFromText] = useState("");
+  const [toText, setToText] = useState("");
   //* States
   const [showOptionsFrom, setShowOptionsFrom] = useState(false);
   const [showOptionsTo, setShowOptionsTo] = useState(false);
@@ -45,6 +56,7 @@ function SearchUi() {
   };
 
   console.log(formData);
+
   // Reformat the types of choosen dates
   const dateDeparture = formatDate(formData.departure);
   const dateReturn = formatDate(formData.return);
@@ -72,6 +84,64 @@ function SearchUi() {
     ? ["from", "to", "departure"].some((field) => formData[field] === "")
     : Object.values(formData).some((value) => value === "");
 
+  console.log(fromText);
+  console.log(isOneWay);
+
+  const onBlurTimeout = useRef(null);
+  const handleBlur = (type) => {
+    if (onBlurTimeout.current) {
+      clearTimeout(onBlurTimeout.current);
+    }
+
+    if (type === "to") {
+      onBlurTimeout.current = setTimeout(() => {
+        setShowOptionsTo(false);
+      }, 100);
+    } else {
+      onBlurTimeout.current = setTimeout(() => {
+        setShowOptionsFrom(false);
+      }, 100);
+    }
+  };
+
+  // Handle Click From Options
+  const handleClickFromOptions = (option) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      from: option,
+    }));
+    setFromText(option);
+    setShowOptionsFrom(false);
+
+    if (formData.to === option) {
+      setFormData((prevData) => ({
+        ...prevData,
+        from: option,
+        to: formData.from,
+      }));
+      setToText(formData.from);
+    }
+  };
+
+  // Handle Click To Options
+  const handleClickToOptions = (option) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      to: option,
+    }));
+    setShowOptionsTo(false);
+    setToText(option);
+
+    if (formData.from === option) {
+      setFormData((prevData) => ({
+        ...prevData,
+        to: option,
+        from: formData.to,
+      }));
+      setFromText(formData.to);
+    }
+  };
+
   return (
     <div>
       <section className='bg-yellow-300 rounded-xl text-black w-1/3 mx-auto mt-10 p-14'>
@@ -87,43 +157,27 @@ function SearchUi() {
                 type='text'
                 id='from'
                 name='from'
-                value={formData.from}
-                onChange={handleChange}
+                value={fromText}
+                onChange={(e) => {
+                  setFromText(e.target.value);
+                }}
                 placeholder='Type or select...'
                 onFocus={() => {
                   setShowOptionsFrom(true);
                 }}
                 className='rounded-md p-1 border-black border text-lg w-auto'
+                onBlur={() => handleBlur("from")}
               />
               {showOptionsFrom && (
                 <ul className='absolute top-full left-0 w-full z-10 text-lg'>
-                  <li
-                    onClick={() => {
-                      setFormData((prevData) => ({
-                        ...prevData,
-                        from: "",
-                      }));
-                      setShowOptionsFrom(false);
-                    }}
-                    className='border-b pl-2 rounded-md bg-white border-black cursor-pointer hover:bg-yellow-200 transition-all'
-                  >
-                    Select
-                  </li>
                   {fromOptions
                     .filter((option) =>
-                      option.toLowerCase().includes(formData.from.toLowerCase())
+                      option.toLowerCase().includes(fromText.toLowerCase())
                     )
                     .map((option, index) => (
                       <option
-                        disabled={formData.to === option}
                         key={index}
-                        onClick={() => {
-                          setFormData((prevData) => ({
-                            ...prevData,
-                            from: option,
-                          }));
-                          setShowOptionsFrom(false);
-                        }}
+                        onClick={() => handleClickFromOptions(option)}
                         className={`border-b pl-2 rounded-md bg-white border-black cursor-pointer hover:bg-yellow-200 transition-all ${
                           formData.to === option ? "text-red-400" : ""
                         }`}
@@ -143,43 +197,23 @@ function SearchUi() {
               <input
                 type='text'
                 name='to'
-                value={formData.to}
-                onChange={handleChange}
+                value={toText}
+                onChange={(e) => setToText(e.target.value)}
                 placeholder='Type or select...'
-                onFocus={() => {
-                  setShowOptionsTo(true);
-                }}
+                onFocus={() => setShowOptionsTo(true)}
                 className='p-1 rounded-md border-black border text-lg'
+                onBlur={() => handleBlur("to")}
               />
               {showOptionsTo && (
                 <ul className='absolute top-full left-0 w-full z-10 text-lg'>
-                  <li
-                    onClick={() => {
-                      setFormData((prevData) => ({
-                        ...prevData,
-                        to: "",
-                      }));
-                      setShowOptionsTo(false);
-                    }}
-                    className='border-b pl-2 rounded-md bg-white border-black cursor-pointer hover:bg-yellow-200 transition-all'
-                  >
-                    Select
-                  </li>
                   {toOptions
                     .filter((option) =>
-                      option.toLowerCase().includes(formData.to.toLowerCase())
+                      option.toLowerCase().includes(toText.toLowerCase())
                     )
                     .map((option, index) => (
                       <option
-                        disabled={formData.from === option}
                         key={index}
-                        onClick={() => {
-                          setFormData((prevData) => ({
-                            ...prevData,
-                            to: option,
-                          }));
-                          setShowOptionsTo(false);
-                        }}
+                        onClick={() => handleClickToOptions(option)}
                         className={`border-b pl-2 rounded-md bg-white border-black cursor-pointer hover:bg-yellow-200 transition-all ${
                           formData.from === option ? "text-red-400" : ""
                         }`}
