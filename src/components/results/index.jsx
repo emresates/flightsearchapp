@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Loader1, Loader2 } from "../loading";
 function Results({
   resultsOneWay,
   resultsReturn,
@@ -8,6 +9,8 @@ function Results({
   to,
   dateDeparture,
   dateReturn,
+  isLoadingDeparture,
+  isLoadingReturn,
 }) {
   const [sortedResultsOneWay, setSortedResultsOneWay] = useState(); // Sorted One Way results
   const [sortedResultsReturn, setSortedResultsReturn] = useState(); // Sorted Round Trip results
@@ -66,6 +69,8 @@ function Results({
     }
   };
 
+  console.log(resultsOneWay);
+
   return (
     <div className='flex w-1/2 h-screen mx-auto mt-10 items-center justify-between rounded-xl overflow-hidden'>
       <div className={`bg-red-400 h-full ${isOneWay ? "w-2/3 m-auto" : "w-1/2"}`}>
@@ -78,7 +83,12 @@ function Results({
           <p className='text-center mt-5 text-3xl'>Please Fill the Blanks</p>
         )}
 
-        {!resultsOneWay.length > 0 && !isFormIncomplete ? (
+        {isLoadingDeparture ? (
+          <div className='w-full h-full flex items-center justify-start mt-10 flex-col'>
+            <p className='text-2xl mb-5'>Results are loading...</p>
+            <Loader2 />
+          </div>
+        ) : !resultsOneWay.length > 0 && !isFormIncomplete ? (
           <p className='text-center mt-5 text-3xl'>There is no result</p>
         ) : (
           <table className='w-full'>
@@ -146,7 +156,12 @@ function Results({
             <p className='text-center mt-5 text-3xl'>Please Fill the Blanks</p>
           )}
 
-          {!resultsReturn.length > 0 && !isFormIncomplete ? (
+          {isLoadingReturn ? (
+            <div className='w-full h-full flex items-center justify-start mt-10 flex-col'>
+              <p className='text-2xl mb-5'>Results are loading...</p>
+              <Loader1 />
+            </div>
+          ) : !resultsReturn.length > 0 && !isFormIncomplete ? (
             <p className='text-center mt-5 text-3xl'>There is no result</p>
           ) : (
             <table className='w-full'>

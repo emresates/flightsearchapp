@@ -40,6 +40,15 @@ function SearchUi() {
     return: "",
   });
 
+  // If data comes from an API call, these are unneccessary, because
+  // there will be a load time automatically
+  // But i use mock data and i have created a loading situation.
+  const [isLoadingDeparture, setIsLoadingDeparture] = useState(false); // Departure loading sit.
+  const [isLoadingReturn, setIsLoadingReturn] = useState(false); // Return loading sit.
+
+  const [searchDataDeparture, setSearchDataDeparture] = useState([]); // Departure results
+  const [searchDataReturn, setSearchDataReturn] = useState([]); // Return results
+
   // When it loads first time, it takes the data
   useEffect(() => {
     setFromOptions(Cities.results);
@@ -50,29 +59,50 @@ function SearchUi() {
   const dateDeparture = formatDate(formData.departure);
   const dateReturn = formatDate(formData.return);
 
-  // Search Results for Departure
-  const searchDataDeparture = Flights.results.filter((item) => {
-    return (
-      item.from === formData.from &&
-      item.to === formData.to &&
-      item.departuredate === dateDeparture
-    );
-  });
-
-  // Search Results for Departure
-  const searchDataReturn = Flights.results.filter((item) => {
-    return (
-      item.from === formData.to &&
-      item.to === formData.from &&
-      item.departuredate === dateReturn
-    );
-  });
-
   // If form is incomplete, it doesn't show the data
   const isFormIncomplete = isOneWay
     ? ["from", "to", "departure"].some((field) => formData[field] === "")
     : Object.values(formData).some((value) => value === "");
 
+  // Departure data loading situation
+  useEffect(() => {
+    if (!isFormIncomplete) {
+      setIsLoadingDeparture(true);
+      setTimeout(() => {
+        const searchData = Flights.results.filter((item) => {
+          return (
+            item.from === formData.from &&
+            item.to === formData.to &&
+            item.departuredate === dateDeparture
+          );
+        });
+        console.log(searchData);
+        setSearchDataDeparture(searchData);
+        setIsLoadingDeparture(false);
+      }, 2000);
+    }
+  }, [formData.from, formData.to, dateDeparture, isFormIncomplete]);
+
+  // Return data loading situation
+  useEffect(() => {
+    if (!isFormIncomplete) {
+      setIsLoadingReturn(true);
+      setTimeout(() => {
+        const searchData = Flights.results.filter((item) => {
+          return (
+            item.from === formData.to &&
+            item.to === formData.from &&
+            item.departuredate === dateReturn
+          );
+        });
+        console.log(searchData);
+        setSearchDataReturn(searchData);
+        setIsLoadingReturn(false);
+      }, 2000);
+    }
+  }, [formData.from, formData.to, dateReturn, isFormIncomplete]);
+
+  //  When you click another place, this function closes the options
   const onBlurTimeout = useRef(null);
   const handleBlur = (type) => {
     if (onBlurTimeout.current) {
@@ -229,6 +259,8 @@ function SearchUi() {
         to={formData.to}
         dateDeparture={dateDeparture}
         dateReturn={dateReturn}
+        isLoadingReturn={isLoadingReturn}
+        isLoadingDeparture={isLoadingDeparture}
       />
     </div>
   );
