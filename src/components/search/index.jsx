@@ -46,8 +46,6 @@ function SearchUi() {
     setToOptions(Cities.results);
   }, []);
 
-  console.log(formData);
-
   // Reformat the types of choosen dates
   const dateDeparture = formatDate(formData.departure);
   const dateReturn = formatDate(formData.return);
@@ -74,9 +72,6 @@ function SearchUi() {
   const isFormIncomplete = isOneWay
     ? ["from", "to", "departure"].some((field) => formData[field] === "")
     : Object.values(formData).some((value) => value === "");
-
-  console.log(fromText);
-  console.log(isOneWay);
 
   const onBlurTimeout = useRef(null);
   const handleBlur = (type) => {

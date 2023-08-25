@@ -9,13 +9,9 @@ function Results({
   dateDeparture,
   dateReturn,
 }) {
-  console.log(isFormIncomplete);
-  console.log(resultsOneWay);
-  console.log(resultsReturn);
-
-  const [sortedResultsOneWay, setSortedResultsOneWay] = useState();
-  const [sortedResultsReturn, setSortedResultsReturn] = useState();
-  const [sortKey, setSortKey] = useState(null);
+  const [sortedResultsOneWay, setSortedResultsOneWay] = useState(); // Sorted One Way results
+  const [sortedResultsReturn, setSortedResultsReturn] = useState(); // Sorted Round Trip results
+  const [sortKey, setSortKey] = useState(null); // Key of sort
   const [ascending, setAscending] = useState(true);
 
   // I added the data into another state for sorting
