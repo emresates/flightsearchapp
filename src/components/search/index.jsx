@@ -170,7 +170,7 @@ function SearchUi() {
 
   return (
     <div>
-      <section className='backdrop-blur-xl rounded-xl shadow-2xl shadow-black text-white w-1/3 mx-auto p-14'>
+      <section className='backdrop-blur-xl rounded-xl shadow-2xl shadow-black text-white w-1/3 mx-auto p-20'>
         {/* Trip Type Choice */}
         <TripTypeChoice isOneWay={isOneWay} setIsOneWay={setIsOneWay} />
 
@@ -192,13 +192,13 @@ function SearchUi() {
                 autocomplete='off'
               />
               {showOptionsFrom && (
-                <ul className='absolute top-full left-0 w-full z-10 text-lg text-black'>
+                <ul className='absolute top-full left-0 w-full text-lg text-black z-50'>
                   {fromOptions
                     .filter((option) =>
                       option.toLowerCase().includes(fromText.toLowerCase())
                     )
                     .map((option, index) => (
-                      <option
+                      <li
                         key={index}
                         onClick={() => handleClickFromOptions(option)}
                         className={`border-b pl-2 rounded-md bg-white border-black cursor-pointer hover:bg-yellow-200 transition-all ${
@@ -206,7 +206,7 @@ function SearchUi() {
                         }`}
                       >
                         {option}
-                      </option>
+                      </li>
                     ))}
                 </ul>
               )}

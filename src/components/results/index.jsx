@@ -130,7 +130,9 @@ function Results({
     >
       <div
         className={`backdrop-blur-md h-full ${
-          isOneWay ? "w-2/3 m-auto rounded-xl shadow-xl shadow-black" : "w-1/2 border-r-4"
+          isOneWay
+            ? "w-2/3 m-auto rounded-xl shadow-xl shadow-black"
+            : "w-1/2 border-r-4"
         }`}
       >
         {/* HEADERS */}
@@ -203,7 +205,11 @@ function Results({
                     key={index}
                     className='select-none h-20 text-center border-b-2 border-black hover:bg-gray-500 transition-colors'
                   >
-                    <td>{result.company}</td>
+                    <td>
+                      <p className='flex flex-col items-center justify-center'>
+                        {result.company}
+                      </p>
+                    </td>
                     <td>
                       <p className='flex flex-col items-center justify-center'>
                         <GiAirplaneDeparture className='text-2xl' />
