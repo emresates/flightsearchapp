@@ -53,6 +53,8 @@ function SearchUi() {
   const [searchDataDeparture, setSearchDataDeparture] = useState([]); // Departure results
   const [searchDataReturn, setSearchDataReturn] = useState([]); // Return results
 
+  const [error, setError] = useState(""); // Error state
+
   //! *********************** REFS ************************* !\\
   // Mouse leave ref
   const onBlurTimeout = useRef(null);
@@ -86,7 +88,6 @@ function SearchUi() {
             item.departuredate === dateDeparture
           );
         });
-        console.log(searchData);
         setSearchDataDeparture(searchData);
         setIsLoadingDeparture(false);
       }, 2000);
@@ -105,7 +106,6 @@ function SearchUi() {
             item.departuredate === dateReturn
           );
         });
-        console.log(searchData);
         setSearchDataReturn(searchData);
         setIsLoadingReturn(false);
       }, 2000);
@@ -130,6 +130,7 @@ function SearchUi() {
       }, 100);
     }
   };
+  console.log(formData);
 
   // Handle Click From Options
   const handleClickFromOptions = (option) => {
@@ -169,6 +170,26 @@ function SearchUi() {
     }
   };
 
+  useEffect(() => {
+    if (formData.from.includes("Istanbul") & formData.to.includes("Istanbul")) {
+      setError("You can not choose the same city!");
+      setFormData((prevData) => ({
+        ...prevData,
+        to: "",
+        from: "",
+      }));
+      setFromText("");
+      setToText("");
+    }
+    const timeoutId = setTimeout(() => {
+      setError("");
+    }, 3000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [formData]);
+
   return (
     <div className='relative'>
       <AvailableDates />
@@ -191,12 +212,12 @@ function SearchUi() {
                 onFocus={() => setShowOptionsFrom(true)}
                 onBlur={() => handleBlur("from")}
                 className='rounded-md pl-2 py-0.5 border placeholder-slate-950 text-lg w-auto shadow-md shadow-white text-white bg-transparent outline-none border-white'
-                autocomplete='off'
+                autoComplete='off'
               />
               {showOptionsFrom && (
                 <ul className='absolute top-full left-0 w-full text-lg text-black z-50'>
                   {fromOptions
-                    .filter((option) =>
+                    ?.filter((option) =>
                       option.toLowerCase().includes(fromText.toLowerCase())
                     )
                     .map((option, index) => (
@@ -228,12 +249,12 @@ function SearchUi() {
                 onFocus={() => setShowOptionsTo(true)}
                 onBlur={() => handleBlur("to")}
                 className='rounded-md pl-2 py-0.5 border placeholder-slate-950 text-lg w-auto shadow-md shadow-white text-white bg-transparent outline-none border-white'
-                autocomplete='off'
+                autoComplete='off'
               />
               {showOptionsTo && (
                 <ul className='absolute top-full left-0 w-full z-10 text-lg text-black'>
                   {toOptions
-                    .filter((option) =>
+                    ?.filter((option) =>
                       option.toLowerCase().includes(toText.toLowerCase())
                     )
                     .map((option, index) => (
@@ -259,6 +280,7 @@ function SearchUi() {
           isOneWay={isOneWay}
           setFormData={setFormData}
         />
+        <p className="absolute b-0 text-red-600">{error}</p>
       </section>
       <Results
         resultsOneWay={searchDataDeparture}
