@@ -10,6 +10,7 @@ import TripTypeChoice from "../tripChoice";
 // Mock Data
 import Cities from "../../data/cities.json";
 import Flights from "../../data/flights.json";
+import AvailableDates from "../availableDates";
 
 // This turns the date to our common usage
 function formatDate(inputDate) {
@@ -169,7 +170,8 @@ function SearchUi() {
   };
 
   return (
-    <div>
+    <div className='relative'>
+      <AvailableDates />
       <section className='backdrop-blur-xl rounded-xl shadow-2xl shadow-black text-white w-1/3 mx-auto p-20'>
         {/* Trip Type Choice */}
         <TripTypeChoice isOneWay={isOneWay} setIsOneWay={setIsOneWay} />
